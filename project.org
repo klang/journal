@@ -1,0 +1,17 @@
+* TODO params are not transferred as they used to be .. 
+* TODO split out the database functionality
+** this must be portable, and usable in other projects
+** TODO rename journal-server to journal, 
+** TODO make general middleware package
+* migration hints
+http://formpluslogic.blogspot.com/2010/04/migrating-from-compojure-032-to-040-and_01.html
+http://groups.google.com/group/compojure/browse_thread/thread/5456e80b1c00b367
+http://weavejester.github.com/compojure/
+http://www.lshift.net/blog/2010/02/27/a-simple-web-application-in-clojure-using-ring-and-enlive
+http://github.com/swannodette/enlive-tutorial
+http://github.com/mmcgrana/ring
+** sessions
+https://mail.google.com/mail/?shva=1#search/with-session/128f432d996bcf1b
+http://github.com/brentonashworth/sandbar/blob/master/src/sandbar/example/session_demo.clj
+* hiccup cheat sheet
+http://compojure.googlegroups.com/web/hiccup_cheatsheet.html?gsc=eSFb

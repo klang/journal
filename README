@@ -1,0 +1,26 @@
+# journal-server
+
+http://ericlavigne.wordpress.com/2008/12/28/using-postgresql-with-compojure/
+
+Converted to use org.hsqldb.jdbcDriver.
+
+I simply did not want to waste time on postgresql right now. 
+I wanted to see clojure work.
+
+The application has been changed a bit to reflect current state of clojure development. Refer to project.clj for further information.
+
+## Usage
+
+lein run script/run.clj
+
+or
+
+lein swank (or M-x swank-clojure-project in emacs)
+
+and in the resulting repl
+
+(load-file "script/run.clj")
+
+## Installation
+
+lein deps
