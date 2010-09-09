@@ -1,4 +1,4 @@
-(defproject journal-server "1.0.0-SNAPSHOT"
+(defproject journal "1.0.0-SNAPSHOT"
   :description "Eric Lavigne's Journal Server, updated and converted to use hsqldb"
   :dependencies
   [[org.clojure/clojure "1.2.0"]

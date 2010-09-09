@@ -16,7 +16,7 @@
   "Start project with some custom setting I have in my global .emacs"
   (interactive)
   (setq project-directory "~/projects")
-  (setq project-name "snippet")
+  (setq project-name "journal")
 
   (setq default-directory (concat project-directory "/" project-name "/"))
 
