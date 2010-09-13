@@ -23,7 +23,12 @@
 (defn page [session title body]
   (html
    [:head [:title title]]
-   [:body [:h1 title] (str "session: " session) body]))
+   [:body [:h1 title] body
+    [:p
+     (if (session :name)
+       (link-to "/logout/"
+		(str "Log out " (session :name)))
+       (link-to "/login/" "Log in"))]]))
 
 (defn article-title-to-url-name [title]
   (.replaceAll
@@ -93,38 +98,29 @@
 	 [:br]
 	 [:input {:type "submit" :value "Log in"}]]))
 
-(defn login-controller [session params]
-  {:body
-   (html "hello there " (params "name") 
-	 " " (= "secret" (params "password"))
-	 " " (.matches (params "name") "[\\w\\s\\-]+")
-	 #_(dosync (alter session assoc :name (params "name")))
-	 "session set to " (params :name))
-   :session {:name (params "name")}})
-
-(defn password-ok? [params]
-  (.matches "secret" (:params "name")))
-
-(comment
-  (defn login-controller [session params]
-    (if (password-ok?) )))
-
-
-(defn set-session [session params] {:session {:name (params "name")}})
-(defn unset-session [session] {:session {:name nil}})
-
 ;; we are going to end up sending a lot of requests to the main page
 (defn go-home [] (redirect "/articles/"))
 
-(defn logout-controller [session]
-    (dosync
-     (alter session assoc :name nil)
-     (go-home)))
+(defn password-ok? [params]
+  (= "secret" (params "password")))
+
+(defn login-controller [session params]
+  (if (password-ok? params)
+    {:body (html "access granted, " (params "name") 
+		 "<br> back to " (link-to "/" "main"))
+     :session {:name (params "name")}}
+    {:body (html "access not granted, " (params "name")  
+		 "<br> try again: " (link-to "/login/" "login"))
+     :session {:name nil}}))
 
 ;; this works, but it butt ugly ..
 ;; it's not supposed to be written like this, is it?
-;; .. session :name is set to parameter input regardless of the password, by the way.
 
+(defn logout-controller [session]
+  {:body
+   (html "bye for now"
+	 "<br> back to " (link-to "/" "main"))
+   :session {:name nil}})
 
 (defn parse-input [a b]
   [(Integer/parseInt a) (Integer/parseInt b)])
@@ -145,17 +141,17 @@
   (GET "/barfu/:user" [user] {:body (str user)})
   ;; -----------------------
   ;; the application
-  (GET "/articles/" {session :session}
-       (view-article-list session))
-  (GET "/articles/:title" {session :session, params :params}
-	 (view-article session (params "title")))
-  (GET "/login/" {session :session}
-       (login-view session))
+  (GET  "/articles/" {session :session}
+	(view-article-list session))
+  (GET  "/articles/:title" {session :session, params :params}
+	(view-article session (params "title")))
+  (GET  "/login/" {session :session}
+	(login-view session))
   (POST "/login/" {session :session, params :params}
-	  (login-controller session params))
-  (ANY "/logout/" {session :session}
-       (logout-controller session))
-  (ANY "/*" [path] (redirect "/articles/")))
+	(login-controller session params))
+  (ANY  "/logout/" {session :session}
+	(logout-controller session))
+  (ANY  "/*" [path] (redirect "/articles/")))
 
 (def app (-> #'handler
 	     (wrap-utf)
@@ -171,36 +167,3 @@
 	     (wrap-if development? wrap-stacktrace)))
 
 
-(comment
-  (defn login-controller [session params]
-    (dosync
-     (if
-	 (and
-	  (= "secret" (params "password"))
-	  ;; Username can include letters, numbers,
-	  ;; spaces, underscores, and hyphens.
-	  (.matches (params "name") "[\\w\\s\\-]+"))
-       (do
-	 (alter session assoc :name (params "name"))
-	 (go-home))
-       (redirect "/login/"))))
-
-  (defn logout-controller [session]
-    (dosync
-     (alter session assoc :name nil)
-     (go-home)))
-
-  (defroutes handler
-    (GET "/articles/" {session :session}
-	 (view-article-list session))
-    (GET "/articles/:title" {session :session, params :params}
-	 (view-article session (params :title)))
-    (GET "/login/" {session :session}
-	 (login-view session))
-    (POST "/login/" {session :session, params :params}
-	  (login-controller session params))
-    (ANY "/logout/" {session :session}
-	 (logout-controller session))
-    (ANY "/*" [path] (redirect "/articles"))
-    )
-)
