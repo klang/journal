@@ -13,4 +13,5 @@
   :dev-dependencies
   [[lein-run "1.0.0-SNAPSHOT"]
    [swank-clojure "1.2.1"]]
-  :jvm-opts ["-server" " -Xmx64M"])
+  ;;:jvm-opts ["-server" " -Xmx64M"]
+  )
