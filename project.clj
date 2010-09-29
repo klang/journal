@@ -1,5 +1,6 @@
 (defproject journal "1.0.0-SNAPSHOT"
   :description "Eric Lavigne's Journal Server, updated and converted to use hsqldb"
+  ;;:jar-behavior :symlink
   :dependencies
   [[org.clojure/clojure "1.2.0"]
    [org.clojure/clojure-contrib "1.2.0"]
@@ -13,5 +14,5 @@
   :dev-dependencies
   [[lein-run "1.0.0-SNAPSHOT"]
    [swank-clojure "1.2.1"]]
-  ;;:jvm-opts ["-server" " -Xmx64M"]
+  :jvm-opts ["-Xmx64M"]
   )

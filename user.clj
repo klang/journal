@@ -11,3 +11,4 @@
   (pwd)
   (load-file "script/run.clj")
   )
+(println "user.clj has been activated")
